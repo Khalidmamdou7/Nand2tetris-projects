@@ -1,0 +1,31 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/01/DMux8Way.hdl
+
+/**
+ * 8-way demultiplexor:
+ * {a, b, c, d, e, f, g, h} = {in, 0, 0, 0, 0, 0, 0, 0} if sel == 000
+ *                            {0, in, 0, 0, 0, 0, 0, 0} if sel == 001
+ *                            etc.
+ *                            {0, 0, 0, 0, 0, 0, 0, in} if sel == 111
+ */
+
+CHIP DMux8Way {
+    IN in, sel[3];
+    OUT a, b, c, d, e, f, g, h;
+
+    PARTS:
+    // tmp1={in ,0 ,0 ,0} tmp2={0 ,in ,0 ,0} tmp3={0 ,0 ,in ,0} tmp4={0 ,0 ,0 ,in}
+    DMux4Way(in=in ,sel=sel[0..1] ,a=tmp1 ,b=tmp2 ,c=tmp3 ,d=tmp4);
+
+    // a={{in ,0 ,0 ,0} , 0}          b={0 , {in ,0 ,0 ,0}}
+    DMux(in=tmp1 ,sel=sel[2] ,a=a ,b=e);
+    // a={{0 ,in ,0 ,0} , 0}          b={0 , {0 ,in ,0 ,0}}
+    DMux(in=tmp2 ,sel=sel[2] ,a=b ,b=f);
+    // a={{0 ,0 ,in ,0} , 0}          b={0 , {0 ,0 ,in ,0}}
+    DMux(in=tmp3 ,sel=sel[2] ,a=c ,b=g);
+    // a={{0 ,0 ,0 ,in} , 0}          b={0 , {0 ,0 ,0 ,in}}
+    DMux(in=tmp4 ,sel=sel[2] ,a=d ,b=h);
+
+}
