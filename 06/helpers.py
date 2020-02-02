@@ -83,6 +83,8 @@ def comptrans(comp):
 	elif comp == 'D|M':
 		acomp = '1'
 		comp = '010101'
+	else:
+		acomp = 'Error'
 
 	comptranslated = acomp + comp
 	return comptranslated
@@ -105,6 +107,8 @@ def desttrans(dest):
 		dest = '110'
 	elif dest == 'AMD':
 		dest = '111'
+	else:
+		dest = 'Error'
 
 	return dest 
 
@@ -126,5 +130,21 @@ def jumptrans(jump):
 		jump = '110'
 	elif jump == 'JMP':
 		jump = '111'
+	else:
+		dest = 'Error'
 
-	return jump
+	return jump 
+
+def decimaltobin(decimal):
+	"""Convert decimal value into binary 2's complement"""
+
+	binary = bin(int(decimal)).lstrip('0b')
+	binary2comp = '0' * (16 - len(binary)) + f'{binary}'
+
+	return binary2comp 
+
+
+
+def getsymbol(command):
+	value = command.strip(' ()@')
+	return value 
